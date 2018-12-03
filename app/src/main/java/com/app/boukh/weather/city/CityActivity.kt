@@ -1,7 +1,8 @@
-package com.app.boukh.weather
+package com.app.boukh.weather.city
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.app.boukh.weather.R
 
 class CityActivity : AppCompatActivity() {
 

@@ -58,6 +58,10 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onCityDeleted(city: City) {
+        showDeleteCityDragment(city)
+    }
+
     private fun showCreacteCityDialog() {
         val createCityFragment = CreateCityDialogFragment()
         createCityFragment.listener = object : CreateCityDialogFragment.CreateCityDialogListener{
@@ -72,6 +76,20 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
         }
         createCityFragment.show(fragmentManager, "CreateCityDialogFragment")
     }
+
+    private fun showDeleteCityDragment(city: City) {
+        val deleteCityFragment = DeleteCityDialogFragment.newInstance(city.name)
+
+        deleteCityFragment.listener = object : DeleteCityDialogFragment.DeleteCityDialogListener{
+            override fun onDialogNegativeClick() {}
+            override fun onDialogPositiveClick() {
+                deleteCity(city)
+            }
+        }
+        deleteCityFragment.show(fragmentManager,"DeleteCityDialogFragment")
+    }
+
+
     private fun saveCity(city: City){
         if (database.createCity(city)) {
             cities.add(city)
@@ -81,11 +99,16 @@ class CityFragment : Fragment(), CityAdapter.CityItemListener {
         }
     }
 
+    private fun deleteCity(city: City) {
+        if (database.deleteCity(city)){
+            cities.remove(city)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
     override fun onCitySelected(city: City) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onCityDeleted(city: City) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+
 }
